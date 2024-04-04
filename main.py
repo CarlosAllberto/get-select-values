@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-# desenvolvido por preguiça de ficar pegando os valores de selects 
+# Desenvolvido por preguiça de ficar pegando os valores de selects 
 
 # Copyright (c) 2024 Carlos Alberto
 
@@ -25,10 +25,10 @@
 
 import requests as re
 from bs4 import BeautifulSoup
-from argparse import ArgumentParser
 from os import system
+# from argparse import ArgumentParser
 
-global url
+# global url
 
 textos_ascii = '''
  _____ _____ __ __ _____ _____ _____ _ 
@@ -44,19 +44,27 @@ valores_ascii = '''
  \___/|__|__|_____|_____|__|__|_____|_____|_|
 '''
 
-parser = ArgumentParser()
-parser.add_argument('--url', '-U', type=str, help='--url https://example.com')
-url = parser.parse_args().url
+# parser = ArgumentParser()
+# parser.add_argument('--url', '-U', type=str, help='--url https://example.com')
+# url = parser.parse_args().url
+
+system('clear')
+
+headers = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36 Edg/123.0.0.0"
+}
 
 class get_values:
     def __init__(self):
-        system('clear')
+        url = str(input("\033[1;35mDIGITE A URL: \033[m"))
         if not url:
             print("\n\033[31m[!] DIGITE UMA URL [!]\033[m\n")
             quit()
 
+        self.url = url
+
     def get_input_values(self):
-        result = re.get(url).text
+        result = re.get(self.url, headers=headers).text
         result_bs4 = BeautifulSoup(result, 'html.parser')
         selects = result_bs4.find_all("select")
         print(f"\033[1;35m{textos_ascii}\033[m")
@@ -65,18 +73,19 @@ class get_values:
             value = ""
             for option in options:
                 if (option.get('value') != None and option.get('value') != ""):
-                    value+=f"{option.contents[0]} | "
-            print(f"\033[7;35m{value.strip()[:-1]}\033[m")
-        print("\n")
+                    option = option.contents[0].replace("\n", "").strip()
+                    value+=f"{option} | "
+            print(f"\033[7;35m{value.strip()[:-1].strip()}\033[m\n")
         print(f"\033[1;35m{valores_ascii}\033[m")
         for select in selects:
             options = select.find_all("option")
             value = ""
             for option in options:
                 if (option.get('value') != None and option.get('value') != ""):
-                    value+=f"{option.get('value')} | "
-            print(f"\033[7;35m{value.strip()[:-1]}\033[m")
-        print("\n")
+                    option = option.get('value').replace("\n", "").strip()
+                    value+=f"{option} | "
+            print(f"\033[7;35m{value.strip()[:-1].strip()}\033[m\n")
 
 if __name__ == '__main__':
-    get_values().get_input_values()
+    while True:
+        get_values().get_input_values()
