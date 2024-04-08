@@ -26,9 +26,6 @@
 import requests as re
 from bs4 import BeautifulSoup
 from os import system
-# from argparse import ArgumentParser
-
-# global url
 
 textos_ascii = '''
  _____ _____ __ __ _____ _____ _____ _ 
@@ -44,10 +41,6 @@ valores_ascii = '''
  \___/|__|__|_____|_____|__|__|_____|_____|_|
 '''
 
-# parser = ArgumentParser()
-# parser.add_argument('--url', '-U', type=str, help='--url https://example.com')
-# url = parser.parse_args().url
-
 system('clear')
 
 headers = {
@@ -62,6 +55,7 @@ class get_values:
             quit()
 
         self.url = url
+        system('clear')
 
     def get_input_values(self):
         result = re.get(self.url, headers=headers).text
